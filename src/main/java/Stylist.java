@@ -1,88 +1,79 @@
 import org.sql2o.*;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.ArrayList;
 
 public class Stylist{
   private String name;
-  private String gender;
-  private String haircut;
-  private String color;
+  private String specialty;
   private int id;
 
 
-  public Stylist(String name, String gender, String haircut, String color){
+  public Stylist(String name, String specialty){
     this.name = name;
-    this.gender = gender;
-    this.haircut = haircut;
-    this.color= color;
+    this.specialty = specialty;
 
-  }
+ try(Connection con = DB.sql2o.open()) {
+     String sql = "INSERT INTO stylists (name, specialty) VALUES (:name, :specialty)";
+     this.id = (int) con.createQuery(sql, true)
+       .addParameter("name", this.name)
+       .addParameter("specialty", this.specialty)
+       .executeUpdate()
+       .getKey();
+   }
+ }
+
+
   public String getName(){
     return name;
   }
-  public String getGender(){
-    return gender;
-  }
-
-  public String getHaircut(){
-    return haircut;
-  }
-
-  public String getColor(){
-    return color;
-  }
-
+  public String getSpecialty(){
+    return specialty;
+ }
   public int getId(){
     return id;
   }
 
-  @Override
-  public boolean equals(Object otherStylist) {
-    if(!(otherStylist instanceof Stylist)){
-      return false;
-    } else {
-      Stylist newStylist = (Stylist) otherStylist;
-      return this.name.equals(newStylist.name) && this.gender.equals(newStylist.gender) &&
-        this.haircut.equals(newStylist.haircut) && this.color.equals(newStylist.color) && this.id == newStylist.id;
-    }
-  }
-
-  public void save(){
+  public static List<Stylist> all() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO stylists(name, gender, haircut, color, client_id) VALUES (:name, :gender, :haircut, :color, :client_id)";
-      this.id = (int) con.createQuery(sql, true)
-        .addParameter("name", this.name)
-        .addParameter("gender", this.gender)
-        .addParameter("haircut", this.haircut)
-        .addParameter("color", this.color)
-        .executeUpdate()
-        .getKey();
+      String sql = "SELECT * FROM stylists ORDER by name";
+      return con.createQuery(sql)
+      .executeAndFetch(Stylist.class);
     }
   }
 
-  public static List<Stylist> all(){
-  String sql="SELECT * FROM stylists";
-  try(Connection con = DB.sql2o.open()) {
-    return con.createQuery(sql).executeAndFetch(Stylist.class);
-  }
-}
-
-  public static List<Stylist> sort(String sortby){
-    String sql="SELECT * FROM stylists ORDER BY :sortby";
+  public static Stylist find(int id) {
     try(Connection con = DB.sql2o.open()) {
-      return con.createQuery(sql).addParameter("sortby", sortby).executeAndFetch(Stylist.class);
-    }
-  }
-
-  public static Stylist find(int id){
-    try(Connection con = DB.sql2o.open()){
-      String sql = "SELECT * FROM stylists WHERE id=:id";
-      Stylist stylist = con.createQuery(sql)
+      String sql = "SELECT * FROM stylists WHERE id = :id";
+      return con.createQuery(sql)
       .addParameter("id", id)
       .executeAndFetchFirst(Stylist.class);
-      return stylist;
     }
   }
+
+  public static void update(String name, String specialty, int id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE stylists SET name = :name, specialty = :specialty WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("id", id)
+        .addParameter("name", name)
+        .addParameter("specialty", specialty)
+        .executeUpdate();
+    }
+  }
+
+  public static void delete(int id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM clients WHERE stylistid = :id";
+      con.createQuery(sql)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM stylists WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
 }
+
