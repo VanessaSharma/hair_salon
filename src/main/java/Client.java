@@ -1,33 +1,33 @@
 import org.sql2o.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 public class Client{
   private String name;
-  private String stylist;
   private String haircut;
   private String color;
   private int id;
-  private int stylist_id;
+  private int stylistid;
 
-
-  public Client(String name, String stylist, String haircut, String color){
+  public Client(String name, String haircut, String color, int stylistid){
     this.name = name;
-    this.stylist = stylist;
     this.haircut = haircut;
     this.color = color;
-    this.stylist_id = stylist_id;
+    this.stylistid = stylistid;
+
+  try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO clients (name, haircut, color, stylistid) VALUES (:name, :haircut, :color, :stylistid)";
+      this.id = (int) con.createQuery(sql, true)
+        .addParameter("name", this.name)
+        .addParameter("haircut", this.haircut)
+        .addParameter("color", this.color)
+        .addParameter("stylistid", this.stylistid)
+        .executeUpdate()
+        .getKey();
+    }
   }
 
   public String getName(){
     return name;
-  }
-
-  public String getStylist(){
-    return stylist;
   }
 
   public String getHaircut(){
@@ -43,54 +43,54 @@ public class Client{
   }
 
   public int getStylistId(){
-    return stylist_id;
-    }
-
-  @Override
-  public boolean equals(Object otherClient) {
-    if (!(otherClient instanceof Client)) {
-      return false;
-    } else {
-      Client newClient = (Client) otherClient;
-      return this.getName().equals(newClient.getName()) && this.getStylist().equals(newClient.getStylist()) && this.getHaircut().equals(newClient.getHaircut()) && this.getColor().equals(newClient.getColor()) && this.getId() == newClient.getId() && this.getStylistId() == newClient.getStylistId();
-    }
-  }
-  public void save() {
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO patients (name, stylist, haircut, color) VALUES (:name, :stylist, :haircut, :color)";
-      this.id = (int) con.createQuery(sql, true)
-        .addParameter("name", this.name)
-        .addParameter("stylist", this.stylist)
-        .addParameter("haircut", this.haircut)
-        .addParameter("color", this.color)
-        .executeUpdate()
-        .getKey();
-    }
-  }
-  public List<Client> getCustomers(){
-  try(Connection con = DB.sql2o.open()) {
-    String sql = "SELECT * FROM stylists WHERE client_id =:id";
-    return con.createQuery(sql)
-    .addParameter("id", this.id)
-    .executeAndFetch(Client.class);
-  }
-}
-
-public static List<Client> all() {
- String sql = "SELECT id, name, stylist, haircut, color FROM clients";
- try(Connection con = DB.sql2o.open()) {
-   return con.createQuery(sql).executeAndFetch(Client.class);
+   return stylistid;
  }
-}
 
   public static Client find(int id) {
-  try(Connection con = DB.sql2o.open()) {
-    String sql = "SELECT * FROM clients WHERE id = :id";
-    Client  client= con.createQuery(sql)
-      .addParameter("id", id)
-      .executeAndFetchFirst(Client.class);
-    return client;
+   try(Connection con = DB.sql2o.open()) {
+     String sql = "SELECT * FROM clients WHERE id = :id";
+     return con.createQuery(sql)
+     .addParameter("id", id)
+     .executeAndFetchFirst(Client.class);
+   }
+ }
+
+  public static List<Client> all() {
+   try(Connection con = DB.sql2o.open()) {
+     String sql = "SELECT * FROM clients ORDER by name";
+     return con.createQuery(sql)
+       .executeAndFetch(Client.class);
+   }
+ }
+  public static List<Client> allByStylist(int stylistid) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM clients WHERE stylistid = :id ORDER by name";
+      return con.createQuery(sql)
+        .addParameter("id", stylistid)
+        .executeAndFetch(Client.class);
+    }
+  }
+
+  public static void update(String name, String haircut, String color, int stylistid, int id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE clients SET name = :name, haircut = :haircut, color = :color, stylistid = :stylistid WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("id", id)
+        .addParameter("name", name)
+        .addParameter("haircut", haircut)
+        .addParameter("color", color)
+        .addParameter("stylistid", stylistid)
+        .executeUpdate();
+    }
+  }
+
+   public static void delete(int id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM clients WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
   }
 }
 
- }
