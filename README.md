@@ -1,25 +1,50 @@
-# _Template_
+# Hair Salon
+------
 
-#### By _Ewa Manek_
+Application allows employees to add/edit clients and stylists. 
 
-## Description
+<br/>
 
-_A template java app with support for gradle, spark and junit testing_
+### Setup/Installation Instructions
+------
+* In PSQL:
+  * CREATE DATABASE hair_salon;
+  * CREATE TABLE stylists (id serial PRIMARY KEY, name varchar, specialty varchar );
+  * CREATE TABLE clients (id serial PRIMARY KEY, name varchar, haircut varchar, color varchar, stylistid int);
+* In command prompt enter: git clone https://github.com/Shabis/java_Hair-Salon.git
+* In command prompt enter: cd hair_salon
+* In command prompt enter: gradle run
+* Navigate to  http://localhost:4567 in your preferred web browser.
 
-## Setup/Installation Requirements
 
-* _Copy the repository from GitHub_
-* _Open in code editor of your choice_
-* _Make sure you have gradle installed!_
-* _gradle will download and install junit and spark_
+<br/>
+
+### Known Bugs
+------
+
+No known bugs as of now.
 
 
-## GitHub link
 
-https://github.com/ewajm/javaSparkTemplate
+### Support and Contact Details
+------
 
-## Licensing
+If you have any questions,concerns, or problens accessing the site, contact vanelunapalacios@live.com.
 
-* MIT
+<br/>
 
-Copyright (c) 2016 **_Ewa Manek_**
+### Technology Used
+------
+
+Java
+Spark
+Gradle
+GitHub
+Velocity 
+PostgreSQL
+JUnit 
+
+<br/>
+
+
+Copyright (c) 2016 **_Vanessa Palacios Sharma_**
