@@ -1,0 +1,13 @@
+<h1>$stylist.getName()<a class="edit" href="/stylists/$stylist.getId()/edit">edit</a></h1>
+<p>$stylist.getSpecialty()</p>
+
+<h2>Clients
+  <a href="/$stylist.getId()/clients/new"><button class="btn btn-success" type="button">Add new client</button></a>
+</h2>
+#foreach ($client in $clients)
+  <h4>$client.getName()<a class="edit" href="/stylists/$stylist.getId()/clients/$client.getId()/edit">edit</a>
+  </h2>
+  <ul>
+    <li>Haircut?: $client.getHaircut()</li>
+    <li>Color?: $client.getColor()</li>
+  </ul>

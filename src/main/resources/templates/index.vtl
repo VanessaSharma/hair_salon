@@ -4,8 +4,8 @@
 <div class="row">
 #foreach ($stylist in $stylists)
   <div class="col-sm-4">
-    <h2><a href="/stylists/$stylist.getId()">$stylist.getName()</a></h>
-    <p><em>$stylist.getSpecialty()</em></p>
+    <h2><a href="/stylists/$stylist.getId()">$stylist.getName()</a></h2>
+    <p>$stylist.getSpecialty()</p>
   </div>
 #end
 </div>

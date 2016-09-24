@@ -99,17 +99,16 @@ public class App {
       Map<String, Object> model = new HashMap<String, Object>();
       int id = Integer.parseInt(request.params(":id"));
       model.put("stylist", Stylist.find(id));
-      model.put("template", "templates/stylist-edit.vtl");
+      model.put("template", "templates/updated-stylist-form.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
     post("/stylists/:id/edit", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-      String firstname = request.queryParams("firstname");
-      String lastname = request.queryParams("lastname");
-      String description = request.queryParams("description");
+      String name = request.queryParams("name");
+      String specialty = request.queryParams("specialty");
       int stylistid = Integer.parseInt(request.params(":id"));
-      Stylist.update(stylistid, firstname, lastname, description);
+      Stylist.update(name, specialty, stylistid);
       response.redirect("/stylists/" + stylistid);
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
@@ -128,31 +127,30 @@ public class App {
       int stylistid = Integer.parseInt(request.params(":stylistid"));
       model.put("client", Client.find(clientid));
       model.put("stylist", Stylist.find(stylistid));
-      model.put("template", "templates/client-edit.vtl");
+      model.put("template", "templates/updated-client-form.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    //post("/stylists/:stylistid/clients/:clientid/edit"
     post("/:stylistid/clients/:clientid/edit", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-      String firstname = request.queryParams("firstname");
-      String lastname = request.queryParams("lastname");
-      String notes = request.queryParams("notes");
+      String name = request.queryParams("name");
+      String haircut = request.queryParams("haircut");
+      String color = request.queryParams("color");
       int stylistid = Integer.parseInt(request.params(":stylistid"));
       int clientid = Integer.parseInt(request.params(":clientid"));
-      Client.update(clientid, firstname, lastname, notes, stylistid);
+      Client.update(name, haircut, color, stylistid, clientid);
       response.redirect("/stylists/" + stylistid);
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    //get("/stylists/:stylistid/clients/:clientid/delete"
     get("/:clientid/delete", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
       int clientid = Integer.parseInt(request.params(":clientid"));
       Client client = Client.find(clientid);
       int stylistid = client.getStylistId();
-      // int stylistid = Integer.parseInt(request.params(":stylistid"));
       Client.delete(clientid);
       response.redirect("/stylists/" + stylistid);
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+  }
+}
