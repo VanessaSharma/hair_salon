@@ -1,12 +1,8 @@
-<h1>Update Client:</h1>
-<br>
-<form action="/clients/new" method="post">
-  <select name="stylistid">
-    #foreach($stylist in $stylists)
-      <option value="$stylist.getId()">$stylist.getName()</option>
-    #end
-</br>
-  </select>
+<h1>Update Client</h1>
+
+<h1>Update Client: $client.getName()</h1>
+<form action="/$stylist.getId()/clients/$client.getId()/edit" method="post">
+  <input type="hidden" name="stylistid" value="$stylist.getId()">
   <div class="form-group">
     <label for="name">Updated Client Name:</label>
     <input type="text" name="name" class="form-control" required>

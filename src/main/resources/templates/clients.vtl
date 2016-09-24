@@ -6,7 +6,7 @@
     <li>Stylist:
       #foreach($stylist in $stylists)
         #if($stylist.getId() == $client.getStylistId())
-          <p>$stylist.getName()</p>
+          <em>$stylist.getName()</em>
         #end
       #end
     </li>
