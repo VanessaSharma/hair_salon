@@ -1,0 +1,17 @@
+<h1>Our Fabulous Stylists</h1>
+
+#foreach ($stylist in $stylists)
+  <a href="/stylists/$stylist.getId()"><h3>$stylist.getName()</h3></a>
+  <ul>
+    <li>Wonderful at:$stylist.getSpecialty()</li>
+    <li>Clients:
+      #foreach($client in $clients)
+        #if($client.getStylistId() == $stylist.getId())
+          <em> $client.getName(),</em>
+        #end
+      #end
+    </li>
+  </ul>
+#end
+
+ <a href="/stylists/new"><button class="btn btn-success" type="button">New Stylist Form</button></a>

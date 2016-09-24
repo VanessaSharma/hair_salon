@@ -1,0 +1,18 @@
+<h1>Clients</h1>
+
+#foreach ($client in $clients)
+  <h4>$client.getName() $client.getHaircut() $client.getColor()<a class="edit" href="/stylists/$client.getStylistId()/clients/$client.getId()/edit">edit</a></h4>
+  <ul>
+    <li>Stylist:
+      #foreach($stylist in $stylists)
+        #if($stylist.getId() == $client.getStylistId())
+          <p>$stylist.getName()</p>
+        #end
+      #end
+    </li>
+    <li>$client.getHaircut $client.getColor</li>
+  </ul>
+#end
+
+<a href="/clients/new"><button class="btn btn-success" type="button">Create new client form</button></a>
+</h1>
