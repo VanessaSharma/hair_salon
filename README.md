@@ -11,7 +11,7 @@ Application allows employees to add/edit clients and stylists.
   * CREATE DATABASE hair_salon;
   * CREATE TABLE stylists (id serial PRIMARY KEY, name varchar, specialty varchar );
   * CREATE TABLE clients (id serial PRIMARY KEY, name varchar, haircut varchar, color varchar, stylistid int);
-* In command prompt enter: git clone https://github.com/Shabis/java_Hair-Salon.git
+* In command prompt enter: git clone https://github.com/VanessaSharma/hair_salon.git
 * In command prompt enter: cd hair_salon
 * In command prompt enter: gradle run
 * Navigate to  http://localhost:4567 in your preferred web browser.
